@@ -24,10 +24,9 @@
     pip install -r requirements.txt
 ```
 
-### 추가 library 설치 및 library list에 추가
+### 추가 library 설치 후 equirement.txt에 추가
 
 ```bash
-    pip install `**`library name`**`
     pip freeze > requirements.txt
 ```
 
