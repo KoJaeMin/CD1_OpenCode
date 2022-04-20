@@ -18,19 +18,19 @@
     source ./env/bin/activate
 ```
 
-### 필요한 library 설치
+### requirement.txt에 있는 library 설치
 
 ```bash
     pip install -r requirements.txt
 ```
 
-### 추가 library 설치 후 equirement.txt에 추가
+### 추가 library 설치 후 requirement.txt에 추가
 
 ```bash
     pip freeze > requirements.txt
 ```
 
-### virtual enviroment 종료
+### 가상환경 종료
 
 ```bash
     deactivate
