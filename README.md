@@ -7,13 +7,13 @@
 
 무조건 pull하신 후에 작업하시기를 바랍니다.
 
-### git branch
-
-각각 각자의 branch를 생성하여 작업하시기를 바랍니다.
-
 ```console
     git pull
 ```
+
+### git branch
+
+각각 각자의 branch를 생성하여 작업하시기를 바랍니다.
 
 ### 가상환경 구축 및 실행
 
