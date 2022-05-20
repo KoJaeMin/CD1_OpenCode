@@ -43,3 +43,14 @@
 ### ocean-cli 부분
 
 ocean-cli를 설치하고 **oc**라는 command가 없을 시 **ocean**이라고 치면 사용 가능 합니다.
+
+### How to install classy vision
+```shell
+pip install -r requirements-classy.txt
+```
+
+### How to access Jupyter / Tensorboard on GPU server from local machine
+```shell
+ssh -L 8888:localhost:8888 root@160.180.160.63 -p 30334
+ssh -L 6007:localhost:6007 root@160.180.160.63 -p 30334
+```
