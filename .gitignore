@@ -1,3 +1,7 @@
+# dataset file
+test/
+train/
+
 # OS file
 .DS_Store
 
