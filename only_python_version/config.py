@@ -9,19 +9,24 @@ import numpy as np
 import time
 
 EPOCHS = 200
-BATCHSIZE = 128
+BATCHSIZE = 10
 SEED = 128
 WEIGHTDECAY = 1e-2
-MOMENTUM = 0.9
-LEARNINGRATE = 1e-3
-PRINTFREQ = 20
-MODELNUMBER = str(datetime.now()).replace(" ","_").replace("-",".")
+LEARNINGRATE = 1e-2
+PRINTFREQ = 10
+MODELNAME = 'DENSENET169'
+# MODELNUMBER = str(datetime.now()).replace(" ","_").replace("-",".")
 
 MEAN = (0.4914, 0.4822, 0.4465)
 STD = (0.2023, 0.1994, 0.2010)
 
 # Only for cifar-10
 classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+NUMCLASSES=len(classes)
+
+LAMBDA1 = 0.9
+LAMBDA2 = 0.7
+LAMBDA3 = 0.7
 
 def fix_seed():
     torch.manual_seed(SEED)
