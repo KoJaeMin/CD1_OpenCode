@@ -7,13 +7,15 @@ from datetime import datetime
 import torch
 import numpy as np
 import time
+import warnings
+warnings.filterwarnings('ignore')
 
-EPOCHS = 200
-BATCHSIZE = 10
+EPOCHS = 150
+BATCHSIZE = 256
 SEED = 128
 WEIGHTDECAY = 1e-2
-LEARNINGRATE = 1e-2
-PRINTFREQ = 10
+LEARNINGRATE = 1e-3
+PRINTFREQ = 20
 MODELNAME = 'DENSENET169'
 # MODELNUMBER = str(datetime.now()).replace(" ","_").replace("-",".")
 
