@@ -11,8 +11,9 @@ def main():
     ##### optimizer / learning rate scheduler / criterion #####
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNINGRATE,
                                 weight_decay=WEIGHTDECAY)
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, [10,20,50,70,120],
-                                                     gamma=0.3)
+    scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer, base_lr=1e-7, 
+                                            step_size_up=5, max_lr=LEARNINGRATE, 
+                                            gamma=0.8, mode='triangular2',cycle_momentum=False)    
     criterion = torch.nn.CrossEntropyLoss()
     ###########################################################
 
@@ -38,7 +39,7 @@ def main():
         
         # train for one epoch
         start_time = time.time()
-        train_last_top1_acc,train_loss = training(trainloader, epoch, model, optimizer, criterion)
+        train_last_top1_acc, train_loss = training(trainloader, epoch, model, optimizer, criterion)
         elapsed_time = time.time() - start_time
         print('==> {:.2f} seconds to train this epoch\n'.format(
             elapsed_time))
@@ -77,6 +78,7 @@ def main():
     plt.figure(1,figsize=(12, 8))
     plt.plot(X1,train_y1,label="Train Accuracy")
     plt.plot(X1,val_y1,label="Validation Accuracy")
+    plt.legend(loc='upper right')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.title('Compare Accuracy')
@@ -85,6 +87,7 @@ def main():
     plt.figure(2,figsize=(12, 8))
     plt.plot(X2,train_y2,label="Train Loss")
     plt.plot(X2,val_y2,label="Validation Loss")
+    plt.legend(loc='upper right')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.title('Compare Loss')
@@ -118,8 +121,8 @@ def training(train_loader, epoch, model, optimizer, criterion):
             lam1 = LAMBDA1
             lam2 = LAMBDA2
             lam3 = LAMBDA3
-            rand_index = torch.randperm(input.size()[0].cuda() if IsGPU else input.size()[0]) # batch_size 내의 인덱스가 랜덤하게 셔플됩니다.
-            shuffled_y = target[rand_index].cuda() if IsGPU else target[rand_index] # 타겟 레이블을 랜덤하게 셔플합니다.
+            rand_index = torch.randperm(input.size()[0]).cuda() if IsGPU else torch.randperm(input.size()[0]) # batch_size 내의 인덱스가 랜덤하게 셔플됩니다.
+            shuffled_y = target[rand_index] # 타겟 레이블을 랜덤하게 셔플합니다.
 
             bbx1, bby1, bbx2, bby2 = rand_bbox(input.size(), lam1)
             input[:,:,bbx1:bbx2, bby1:bby2] = input[shuffled_y,:,bbx1:bbx2, bby1:bby2]### X는 cutmix된 이미지입니다.
@@ -162,7 +165,7 @@ def training(train_loader, epoch, model, optimizer, criterion):
 
     print('=> Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
           .format(top1=top1, top5=top5))
-    return top1.avg
+    return top1.avg, losses.avg
 
 def validating(val_loader, epoch, model, optimizer, criterion):
     batch_time = AverageMeter('Time', ':6.3f')
