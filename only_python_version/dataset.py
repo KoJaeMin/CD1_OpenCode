@@ -21,6 +21,7 @@ std = STD
 ### gpu 사용여부
 device = device()
 IsGPU = device==torch.device('cuda')
+print(IsGPU)
 
 ### seed 고정
 fix_seed()
@@ -32,14 +33,14 @@ if(IsGPU):
             transforms.ToTensor(),
             # transforms.Resize((256,256)),### 사진을 보기 위해서 임의로 resize했습니다.
             transforms.Normalize(mean, std)
-    ])
+])
 else:
     transform = transforms.Compose([
             ### cifar 10 size는 (32,32) 이므로 resize해줄 필요는 없음.
             transforms.Resize((256,256)),### 사진을 보기 위해서 임의로 resize했습니다.
             transforms.ToTensor(),
             # transforms.Normalize(mean, std)
-    ])
+])
 
 
 trainset = torchvision.datasets.CIFAR10(root='../train/', train=True,
@@ -52,19 +53,16 @@ validation_size = int(len(trainset)*0.2)
 trainset, validationset = torch.utils.data.random_split(trainset,[train_size,validation_size])
 
 testset = torchvision.datasets.CIFAR10(root='../test/', train=False,
-                                       download=True, transform= transforms.Compose([
-                                           transforms.ToTensor(),
-                                           transforms.Normalize(mean, std)
-                                        ]))
+                                       download=True, transform=transform)
 
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
-                                          shuffle=True)
+                                          shuffle=True, num_workers=2)
 
 validationloader = torch.utils.data.DataLoader(validationset,batch_size=batch_size,
-                                          shuffle=True)
+                                          shuffle=True, num_workers=2)
 
 testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
-                                         shuffle=False)
+                                         shuffle=False,  num_workers=2)
 
 # for i, data in enumerate(trainloader):
 #     inputs, labels = data
