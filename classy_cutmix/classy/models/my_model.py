@@ -5,12 +5,11 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch.nn as nn
-import torchvision.models as models
 from classy_vision.models import ClassyModel, register_model
 
 
-@register_model("my_model")
-class MyModel(ClassyModel):
+@register_model("MyClassy")
+class MyClassy(ClassyModel):
     def __init__(self):
         super().__init__()
         self.model = nn.Sequential(
