@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import matplotlib.pyplot as plt
 
-from classy.models.my_model import MyClassy
 from dataset import *
 from utils import *
 
 
 def main():
-    model = MyClassy(num_classes=NUMCLASSES)### 모델명만 바꿔주세요!!
+    model = torch.hub.load('facebookresearch/WSL-Images', 'resnext101_32x32d_wsl')
 
     ##### optimizer / learning rate scheduler / criterion #####
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNINGRATE,
