@@ -47,9 +47,9 @@ def eval():
             correct3 += (predictions3 == target).sum().item()
         
 
-    print(f'Accuracy of cutmix and mixup model on the 10000 test images: {100 * correct1 // total} %')
-    print(f'Accuracy of cutmix model on the 10000 test images: {100 * correct2 // total} %')
-    print(f'Accuracy of mixup model on the 10000 test images: {100 * correct3 // total} %')
+    print(f'Accuracy of cutmix and mixup {MODELNAME} on the 10000 test images: {100 * correct1 // total} %')
+    print(f'Accuracy of cutmix {MODELNAME} on the 10000 test images: {100 * correct2 // total} %')
+    print(f'Accuracy of mixup {MODELNAME} on the 10000 test images: {100 * correct3 // total} %')
 
 
 if __name__ == "__main__":
