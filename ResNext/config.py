@@ -16,7 +16,7 @@ SEED = 128
 WEIGHTDECAY = 1e-2
 LEARNINGRATE = 1e-3
 PRINTFREQ = 20
-MODELNAME = 'DENSENET169'
+MODELNAME = 'RESNEXT101_32x32d'
 # MODELNUMBER = str(datetime.now()).replace(" ","_").replace("-",".")
 
 MEAN = (0.4914, 0.4822, 0.4465)

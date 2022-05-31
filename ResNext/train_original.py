@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-from resnext101_32x32d import *
 from dataset import *
+from resnext101_32x32d import *
 from utils import *
 
 
 def main():
-    model = resnext101_32x32d_wsl(num_classes=NUMCLASSES)
+    model = resnext101_32x32d_wsl(num_classes=NUMCLASSES)### 모델명만 바꿔주세요!!
 
     ##### optimizer / learning rate scheduler / criterion #####
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNINGRATE,
                                 weight_decay=WEIGHTDECAY)
     scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer, base_lr=1e-7, 
-                                              step_size_up=5, max_lr=LEARNINGRATE, 
-                                              gamma=0.8, mode='triangular2',cycle_momentum=False)
+                                            step_size_up=5, max_lr=LEARNINGRATE, 
+                                            gamma=0.8, mode='triangular2',cycle_momentum=False)    
     criterion = torch.nn.CrossEntropyLoss()
     ###########################################################
 
@@ -59,7 +59,7 @@ def main():
         validation_correct_history.append(val_last_top1_acc)
 
         # Save model each epoch
-        torch.save(model.state_dict(), f'../result/model/model_weight_{MODELNAME}_mixup.pth')
+        torch.save(model.state_dict(), f'../result/model/model_weight_{MODELNAME}_original.pth')
 
     print(f"Train Last Top-1 Accuracy: {train_last_top1_acc}")
     print(f"Validation Last Top-1 Accuracy: {val_last_top1_acc}")
@@ -75,24 +75,25 @@ def main():
 
 
     plt.figure(1,figsize=(12, 8))
-    plt.plot(X1,train_y1,label=f"{MODELNAME} + mixup Train Accuracy",color='#CBB162', linestyle='-')
-    plt.plot(X1,val_y1,label=f"{MODELNAME} + mixup Validation Accuracy",color='#CBB162', linestyle='--')
+    plt.plot(X1,train_y1,label=f"{MODELNAME} Train Accuracy",color='#3B7DB0', linestyle='-')
+    plt.plot(X1,val_y1,label=f"{MODELNAME} Validation Accuracy",color='#3B7DB0', linestyle='--')
     plt.legend(loc='best')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.title(f'{MODELNAME} Compare Accuracy')
-    # plt.savefig(f"../result/img/{MODELNAME}_mixup_Compare_Accuracy.png")
+    # plt.savefig(f"../result/img/{MODELNAME}_original_Compare_Accuracy.png")
 
     plt.figure(2,figsize=(12, 8))
-    plt.plot(X2,train_y2,label=f"{MODELNAME} + mixup Train Loss",color='#CBB162', linestyle='-')
-    plt.plot(X2,val_y2,label=f"{MODELNAME} + mixup Validation Loss",color='#CBB162', linestyle='--')
+    plt.plot(X2,train_y2,label=f"{MODELNAME} Train Loss",color='#3B7DB0', linestyle='-')
+    plt.plot(X2,val_y2,label=f"{MODELNAME} Validation Loss",color='#3B7DB0', linestyle='--')
     plt.legend(loc='best')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.title(f'{MODELNAME} Compare Loss')
-    # plt.savefig(f"../result/img/{MODELNAME}_mixup_Compare_Loss.png")
+    # plt.savefig(f"../result/img/{MODELNAME}_original_Compare_Loss.png")
 
     return train_last_top1_acc,val_last_top1_acc,pytorch_total_params,train_loss_history,train_correct_history,validation_loss_history,validation_correct_history
+    
     
 
 
@@ -112,30 +113,11 @@ def training(train_loader, epoch, model, optimizer, criterion):
     for i, (input, target) in enumerate(train_loader):
         # measure data loading time
         data_time.update(time.time() - end)
+        input = input.cuda() if IsGPU else input
+        target = target.cuda() if IsGPU else target
 
-        if i % 3 == 0:
-            temp_X_1 = input.clone().detach().cuda() if IsGPU else input.clone().detach()
-            input = input.cuda() if IsGPU else input
-            target = target.cuda() if IsGPU else target
-
-            lam2 = LAMBDA2
-            rand_index = torch.randperm(input.size()[0]).cuda() if IsGPU else torch.randperm(input.size()[0]) # batch_size 내의 인덱스가 랜덤하게 셔플됩니다.
-            shuffled_y = target[rand_index] # 타겟 레이블을 랜덤하게 셔플합니다.
-
-            temp_X_1[:,:,:,:]=temp_X_1[shuffled_y,:,:,:]
-            mixed_1 = lam2 * input + (1 - lam2) * temp_X_1
-            mixed_1 = mixed_1.cuda() if IsGPU else mixed_1
-
-            # compute output
-            output = model(mixed_1)
-            loss = mixup_criterion(criterion,output,target,shuffled_y,lam2)
-
-        else:
-            input = input.cuda() if IsGPU else input
-            target = target.cuda() if IsGPU else target
-
-            output = model(input)
-            loss = criterion(output, target)
+        output = model(input)
+        loss = criterion(output, target)
 
 
         # measure accuracy and record loss, accuracy 
