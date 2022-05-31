@@ -76,22 +76,24 @@ def main():
 
 
     plt.figure(1,figsize=(12, 8))
-    plt.plot(X1,train_y1,label="Train Accuracy")
-    plt.plot(X1,val_y1,label="Validation Accuracy")
-    plt.legend(loc='upper right')
+    plt.plot(X1,train_y1,label=f"{MODELNAME} + mixup Train Accuracy",color='#CBB162', linestyle='-')
+    plt.plot(X1,val_y1,label=f"{MODELNAME} + mixup Validation Accuracy",color='#CBB162', linestyle='--')
+    plt.legend(loc='best')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
-    plt.title('Compare Accuracy')
-    plt.savefig(f"../result/img/{MODELNAME}_mixup_Compare_Accuracy.png")
+    plt.title(f'{MODELNAME} Compare Accuracy')
+    # plt.savefig(f"../result/img/{MODELNAME}_mixup_Compare_Accuracy.png")
 
     plt.figure(2,figsize=(12, 8))
-    plt.plot(X2,train_y2,label="Train Loss")
-    plt.plot(X2,val_y2,label="Validation Loss")
-    plt.legend(loc='upper right')
+    plt.plot(X2,train_y2,label=f"{MODELNAME} + mixup Train Loss",color='#CBB162', linestyle='-')
+    plt.plot(X2,val_y2,label=f"{MODELNAME} + mixup Validation Loss",color='#CBB162', linestyle='--')
+    plt.legend(loc='best')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
-    plt.title('Compare Loss')
-    plt.savefig(f"../result/img/{MODELNAME}_mixup_Compare_Loss.png")
+    plt.title(f'{MODELNAME} Compare Loss')
+    # plt.savefig(f"../result/img/{MODELNAME}_mixup_Compare_Loss.png")
+
+    return train_last_top1_acc,val_last_top1_acc,pytorch_total_params,train_loss_history,train_correct_history,validation_loss_history,validation_correct_history
     
     
 

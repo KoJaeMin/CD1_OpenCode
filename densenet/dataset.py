@@ -64,12 +64,6 @@ validationloader = torch.utils.data.DataLoader(validationset,batch_size=batch_si
 testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
                                          shuffle=False,  num_workers=2)
 
-# for i, data in enumerate(trainloader):
-#     inputs, labels = data
-#     if i == 1:
-#         print(labels)
-#         break
-
 ### 이미지를 보기
 def print_info():
     print(f"your device is {device}")
