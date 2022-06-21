@@ -1,56 +1,31 @@
 # CD1_OpenCode
 2022년 1학기 컴퓨터공학과 캡스톤디자인1 오픈코드팀
 
-## 주의 사항
+## Multiple Data Augmentation(CutMix+Mixup)
+<img src="./result/img/cutmix_cat_dog.png">
 
-### git pull
+## Experimental results
+|Model + Method|Train Top1 Accuracy|Validation Top1 Accuracy|Test Top1 Accuracy|
+|---|---|---|---|
+|ResNet18|100|65.41|65.46|
+|ResNet18+CutMix|98.62|73.57|73.15|
+|ResNet18+Mixup|97.38|73.53|73.32|
+|ResNet18+CutMixup|99.98|67.11|67.45|
+|ResNet18+Multiple Data Augmentation(CutMix+Mixup)|92.80|75.12|74.95|
+|ResNet34|100|66.30|65.50|
+|ResNet34+CutMix|98.14|73.03|74.54|
+|ResNet34+Mixup|97.15|72.92|72.96|
+|ResNet34+CutMixup|99.95|68.04|67.78|
+|ResNet34+Multiple Data Augmentation(CutMix+Mixup)|92.39|73.65|73.95|
+|DenseNet169|100|71.59|71.45|
+|DenseNet169+CutMix|98.33|77.57|77.72|
+|DenseNet169+Mixup|76.19|76.45|77.07|
+|DenseNet169+CutMixup|98.89|76.33|76.87|
+|DenseNet169+Multiple Data Augmentation(CutMix+Mixup)|73.74|77.14|77.95|
 
-무조건 pull하신 후에 작업하시기를 바랍니다.
-
-```console
-    git pull
-```
-
-### git branch
-
-각각 각자의 branch를 생성하여 작업하시기를 바랍니다.
-
-### 가상환경 구축 및 실행
-
-```console
-    python3 -m venv env
-    source ./env/bin/activate
-```
-
-### requirement.txt에 있는 library 설치
-
-```console
-    pip install -r requirements.txt
-```
-
-### 추가 library 설치 후 requirement.txt 최신화
-
-```console
-    pip freeze > requirements.txt
-```
-
-### 가상환경 종료
-
-```console
-    deactivate
-```
-
-### ocean-cli 부분
-
-ocean-cli를 설치하고 **oc**라는 command가 없을 시 **ocean**이라고 치면 사용 가능 합니다.
-
-### How to install classy vision
-```shell
-pip install -r requirements-classy.txt
-```
-
-### How to access Jupyter / Tensorboard on GPU server from local machine
-```shell
-ssh -L 8888:localhost:8888 root@160.180.160.63 -p 30334
-ssh -L 6007:localhost:6007 root@160.180.160.63 -p 30334
-```
+## Environment
+- Python 3.7.13
+- Pytorch 1.11.0 
+- CUDA 11.3
+- Ubuntu 18.04.5 LTS
+- Tesla P100
